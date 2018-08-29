@@ -4,13 +4,11 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import com.it.dnc.keoh.appdata.model.Contact;
-import com.it.dnc.keoh.appdata.model.Rush;
 
 import java.util.List;
-
-import io.reactivex.Maybe;
 
 /**
  * Created by dnc on 12/08/18.
@@ -28,6 +26,9 @@ public interface ContactDao {
 
     @Insert
     void insert(Contact... contacts);
+
+    @Update
+    void update(Contact... repos);
 
     @Delete
     void delete(Contact... contacts);

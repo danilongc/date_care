@@ -25,7 +25,13 @@ public class ContactSaveAsyncTask extends AsyncTask<Void, Void, Contact> {
     @Override
     protected Contact doInBackground(Void... voids) {
         AppDatabase appDatabase = AppDatabase.getAppDatabase(weakActivity.get().getApplicationContext());
-        appDatabase.contactDao().insert(contact);
+
+        if(contact.getId() != null){
+            appDatabase.contactDao().update(contact);
+        }else{
+            appDatabase.contactDao().insert(contact);
+        }
+
         return contact;
     }
 

@@ -44,7 +44,7 @@ public class EditContactActivity extends AppCompatActivity {
 
     private Spinner listStates;
     private boolean isEdit = false;
-    private Contact contact = null;
+    private Contact mContact = null;
 
 
     @SuppressLint("WrongViewCast")
@@ -92,9 +92,9 @@ public class EditContactActivity extends AppCompatActivity {
 
                List<Contact> contacts = asyncTask.execute(contact_id).get();
                if(contacts != null){
-                   contact = contacts.get(0);
+                   mContact = contacts.get(0);
                }
-               loadContacts();
+               loadContact();
            } catch (InterruptedException e) {
                e.printStackTrace();
            } catch (ExecutionException e) {
@@ -122,19 +122,17 @@ public class EditContactActivity extends AppCompatActivity {
         }
     }
 
-    private void loadContacts(){
-        this.txtName.setText(contact.getName());
-        this.txtCity.setText(contact.getCity());
-        this.txtInstagram.setText(contact.getInstagram());
-        this.txtFacebook.setText(contact.getFacebook());
-        this.txtWhere.setText(contact.getWhere());
-        this.listStates.setSelection(contact.getState());
-
-
+    private void loadContact(){
+        this.txtName.setText(mContact.getName());
+        this.txtCity.setText(mContact.getCity());
+        this.txtInstagram.setText(mContact.getInstagram());
+        this.txtFacebook.setText(mContact.getFacebook());
+        this.txtWhere.setText(mContact.getWhere());
+        this.listStates.setSelection(mContact.getState());
 
 
         //Load insta contact image
-        File fileImg = new File(Environment.getExternalStorageDirectory() + "/keoh/", String.format(Constants.PREFIX_INSTA_PIC_FILE, contact.getInstagram()));
+        File fileImg = new File(Environment.getExternalStorageDirectory() + "/keoh/", String.format(Constants.PREFIX_INSTA_PIC_FILE, mContact.getInstagram()));
         if(fileImg.exists()){
             Bitmap bitmap = BitmapFactory.decodeFile(fileImg.getPath());
             this.imgContact.setImageBitmap(bitmap);
@@ -147,12 +145,13 @@ public class EditContactActivity extends AppCompatActivity {
 
 
         Contact contact = validateContact();
-
         if(contact == null){
             return;
         }
 
-
+        if(isEdit){
+            contact.setId(mContact.getId());
+        }
 
         ContactSaveAsyncTask asyncTask  = new ContactSaveAsyncTask(this, contact);
         asyncTask.execute();

@@ -36,7 +36,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.it.dnc.keoh.MainActivity" />
         </activity>
-
+        <activity android:name=".EditRushActivity"></activity>
     </application>
 
 </manifest>

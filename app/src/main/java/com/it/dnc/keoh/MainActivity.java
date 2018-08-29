@@ -109,10 +109,9 @@ public class MainActivity  extends AppCompatActivity implements  ContactItemFrag
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if(data.getExtras().get("result").toString().equals("created")){
+        if(data.getExtras() != null && data.getExtras().get("result").toString().equals("created")){
            reloadActivit();
         }
-
     }
 
     private void reloadActivit(){

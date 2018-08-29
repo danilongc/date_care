@@ -21,7 +21,7 @@ public class Contact {
     private Boolean checked = false;
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private Integer id;
 
     @ColumnInfo(name = "name")
     private String name;
@@ -49,11 +49,11 @@ public class Contact {
 
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
