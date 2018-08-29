@@ -18,5 +18,23 @@ public class CollectionUtil {
         return new StringBuilder(s).replace(lastSeparatorIndex, lastSeparatorIndex+1, "").toString();
     }
 
+    public static int getCountOnStrList(String strList){
+
+        if(strList == null || strList.isEmpty() ){
+            return 0;
+        }
+        int count = 0;
+
+        strList = strList.trim();
+        String[] itens = strList.split(Constants.STR_LIST_SEPARATOR);
+
+        for(String item : itens){
+            if(item.equals(Constants.STR_LIST_SEPARATOR)){
+                count++;
+            }
+        }
+        return count;
+    }
+
 
 }

@@ -38,6 +38,8 @@ public class EditContactActivity extends AppCompatActivity {
     private TextInputEditText txtCity;
     private TextInputEditText txtInstagram;
     private TextInputEditText txtFacebook;
+    private TextInputEditText txtWhere;
+
     private ImageView imgContact;
 
     private Spinner listStates;
@@ -73,6 +75,8 @@ public class EditContactActivity extends AppCompatActivity {
         this.imgContact = (ImageView) findViewById(R.id.imgContact);
         this.listStates = (Spinner)findViewById(R.id.listStates);
         this.txtFacebook = (TextInputEditText) findViewById(R.id.txtContactFace);
+        this.txtWhere = (TextInputEditText) findViewById(R.id.txtContactWhere);
+
 
         this.listStates.setSelection(Arrays.binarySearch(getResources().getStringArray(R.array.states), 0 , 26, "MG"));
 
@@ -122,6 +126,12 @@ public class EditContactActivity extends AppCompatActivity {
         this.txtName.setText(contact.getName());
         this.txtCity.setText(contact.getCity());
         this.txtInstagram.setText(contact.getInstagram());
+        this.txtFacebook.setText(contact.getFacebook());
+        this.txtWhere.setText(contact.getWhere());
+        this.listStates.setSelection(contact.getState());
+
+
+
 
         //Load insta contact image
         File fileImg = new File(Environment.getExternalStorageDirectory() + "/keoh/", String.format(Constants.PREFIX_INSTA_PIC_FILE, contact.getInstagram()));
@@ -171,6 +181,9 @@ public class EditContactActivity extends AppCompatActivity {
         String name = this.txtName.getText().toString();
         String city = this.txtCity.getText().toString();
         String instagram = this.txtInstagram.getText().toString();
+        String facebook =  this.txtFacebook.getText().toString();
+        String where = this.txtWhere.getText().toString();
+        Integer state = this.listStates.getSelectedItemPosition();
 
 
         if (TextUtils.isEmpty(name)) {
@@ -194,6 +207,9 @@ public class EditContactActivity extends AppCompatActivity {
             newContact.setName(name);
             newContact.setCity(city);
             newContact.setInstagram(instagram);
+            newContact.setFacebook(facebook);
+            newContact.setState(state);
+            newContact.setWhere(where);
             
             saveContactPictureIntoStorage();
             
@@ -216,7 +232,7 @@ public class EditContactActivity extends AppCompatActivity {
             rootPath.mkdirs();
         }
 
-        File dataFile = new File(rootPath, fileName + ".jpg");
+        File dataFile = new File(rootPath, fileName);
         FileOutputStream ostream = null;
         try {
             ostream = new FileOutputStream(dataFile,false);

@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="#f1f1f1"
     android:layout_height="match_parent">
 
 
@@ -18,15 +19,12 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:title="@string/app_name"
             app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:logo="@drawable/keoh_logo3"
+            app:title=" "
             >
 
-
         </android.support.v7.widget.Toolbar>
-
-
-
 
     </android.support.design.widget.AppBarLayout>
 

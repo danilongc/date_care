@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -37,7 +36,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView2"
             app:layout_constraintTop_toBottomOf="@+id/imgContact">
 
             <android.support.design.widget.TextInputEditText
@@ -135,31 +134,22 @@
             app:layout_constraintTop_toBottomOf="@+id/txtContactFaceLayout">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/txtContactMeet"
+                android:id="@+id/txtContactWhere"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Conheceu por..."
                 android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
 
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/txtTesteLayout"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            android:layout_marginEnd="8dp"
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/txtContactNameLayout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtContactMeetLayout">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/txtTeste"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Conheceu por..." />
-        </android.support.design.widget.TextInputLayout>
+            app:srcCompat="@drawable/ic_person_24dp" />
 
 
     </android.support.constraint.ConstraintLayout>

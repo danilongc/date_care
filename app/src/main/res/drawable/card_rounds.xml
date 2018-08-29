@@ -39,7 +39,7 @@
     <item>
         <shape>
 
-            <solid android:color="#FFFFFF" />
+            <solid android:color="@color/card" />
         </shape>
     </item>
 </layer-list>

@@ -8,6 +8,7 @@
     <string name="title_activity_edit_contact">EditContactActivity</string>
     <string name="title_activity_login">Sign in</string>
     <string name="rush">Rush</string>
+    <string name="delete_contact">Delete Contact</string>
 
     <string-array name="states">
         <item>AC</item>

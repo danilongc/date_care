@@ -1,8 +1,12 @@
 package com.it.dnc.keoh;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -18,13 +22,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 
 import com.it.dnc.keoh.appdata.model.Contact;
 import com.it.dnc.keoh.appdata.model.Rush;
+import com.it.dnc.keoh.tasks.ContactDeleteAsyncTask;
 import com.it.dnc.keoh.tasks.RushCreateAsyncTask;
 import com.it.dnc.keoh.util.CollectionUtil;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -103,10 +110,14 @@ public class MainActivity  extends AppCompatActivity implements  ContactItemFrag
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if(data.getExtras().get("result").toString().equals("created")){
-            finish();
-            startActivity(getIntent());
+           reloadActivit();
         }
 
+    }
+
+    private void reloadActivit(){
+        finish();
+        startActivity(getIntent());
     }
 
     private boolean checkPermissions() {
@@ -153,47 +164,134 @@ public class MainActivity  extends AppCompatActivity implements  ContactItemFrag
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        if(id == R.id.action_rush){
-            createRush();
+        switch (id){
+            case R.id.action_settings :
+                return true;
+            case R.id.action_rush :
+                createRush();
+                break;
+            case R.id.action_delete_contact :
+                deleteContact(contactListFragment.getSelection().get(0));
+                break;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void createRush(){
-        List<Contact> selectedContacts = contactListFragment.getSelection();
+    private void deleteContact(Contact contact) {
 
-        Rush rush =  new Rush();
-        rush.setDtStart(new Date());
-        rush.setDtEnd(new Date());
-
-        String[] contactIds = new String[selectedContacts.size()];
-        int index = 0;
-        for(Contact contact : selectedContacts){
-            contactIds[index] = String.valueOf(contact.getId());
-            index =  index + 1;
-        }
-
-        rush.setContactList(CollectionUtil.getStrList(contactIds));
-
-        RushCreateAsyncTask asyncTask  = new RushCreateAsyncTask(this);
-
+        ContactDeleteAsyncTask deleteAsyncTask = new ContactDeleteAsyncTask(this, contact);
         try {
-            Rush createdRush = asyncTask.execute(rush).get();
-            if(createdRush != null){
-                String okTxt = "Rush com " + selectedContacts.size() + " contados criado.";
-                Snackbar.make(contactListFragment.getView() , okTxt, Snackbar.LENGTH_LONG).show();
+            Contact deleted = deleteAsyncTask.execute().get();
+            if(deleted != null){
+                contactListFragment.clearSelection();
+                reloadActivit();
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+    }
+
+    private void createRush(){
+
+        final Activity act = this;
+
+        Calendar calendar = Calendar.getInstance();
+        final Calendar newDateStart = Calendar.getInstance();
+        final Calendar newDateEnd = Calendar.getInstance();
+
+        final DatePickerDialog datePickerDialog2 = new DatePickerDialog(this, null , calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog2.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                newDateEnd.set(year, monthOfYear, dayOfMonth);
+
+
+                List<Contact> selectedContacts = contactListFragment.getSelection();
+
+                Rush rush =  new Rush();
+                rush.setDtStart(newDateStart.getTime());
+                rush.setDtEnd(newDateEnd.getTime());
+                rush.setCity(selectedContacts.get(0).getCity());
+
+                String[] contactIds = new String[selectedContacts.size()];
+                int index = 0;
+                for(Contact contact : selectedContacts){
+                    contactIds[index] = String.valueOf(contact.getId());
+                    index =  index + 1;
+                }
+
+                rush.setContactList(CollectionUtil.getStrList(contactIds));
+
+                RushCreateAsyncTask asyncTask  = new RushCreateAsyncTask(act);
+
+                try {
+                    Rush createdRush = asyncTask.execute(rush).get();
+                    if(createdRush != null){
+                        String okTxt = "Rush com " + selectedContacts.size() + " contados criado.";
+                        Snackbar.make(contactListFragment.getView() , okTxt, Snackbar.LENGTH_LONG).show();
+
+                        contactListFragment.clearSelection();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
+        } );
+
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(this, null , calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                newDateStart.set(year, monthOfYear, dayOfMonth);
+                datePickerDialog2.show();
+            }
+
+        } );
+
+        datePickerDialog.show();
+
+
+       /* final Activity act = this;
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getApplicationContext());
+        datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                List<Contact> selectedContacts = contactListFragment.getSelection();
+
+                Rush rush =  new Rush();
+                rush.setDtStart(new Date());
+                rush.setDtEnd(new Date());
+
+                String[] contactIds = new String[selectedContacts.size()];
+                int index = 0;
+                for(Contact contact : selectedContacts){
+                    contactIds[index] = String.valueOf(contact.getId());
+                    index =  index + 1;
+                }
+
+                rush.setContactList(CollectionUtil.getStrList(contactIds));
+
+                RushCreateAsyncTask asyncTask  = new RushCreateAsyncTask(act);
+
+                try {
+                    Rush createdRush = asyncTask.execute(rush).get();
+                    if(createdRush != null){
+                        String okTxt = "Rush com " + selectedContacts.size() + " contados criado.";
+                        Snackbar.make(contactListFragment.getView() , okTxt, Snackbar.LENGTH_LONG).show();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        datePickerDialog.show();
+*/
     }
 
 
@@ -210,9 +308,45 @@ public class MainActivity  extends AppCompatActivity implements  ContactItemFrag
     public void onMultiFragmentInteraction(Boolean multi, List<Contact> contacts) {
         if(multi){
             this.menu.findItem(R.id.action_rush).setVisible(true);
+
+            if(contacts.size() == 1){
+                this.menu.findItem(R.id.action_delete_contact).setVisible(true);
+            }else{
+                this.menu.findItem(R.id.action_delete_contact).setVisible(false);
+            }
+
         }else{
             this.menu.findItem(R.id.action_rush).setVisible(false);
         }
+
+    }
+
+    @Override
+    public void onInstagramClick(Contact item) {
+
+        Uri uri = Uri.parse("http://instagram.com/_u/" + item.getInstagram());
+        Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
+        likeIng.setPackage("com.instagram.android");
+        try {
+            startActivity(likeIng);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW,  Uri.parse("http://instagram.com/" + item.getInstagram())));
+        }
+
+    }
+
+    @Override
+    public void onFacebookClick(Contact item) {
+
+        Uri uri = Uri.parse("http://facebook.com/_u/" + item.getFacebook());
+        Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
+        likeIng.setPackage("com.facebook.android");
+        try {
+            startActivity(likeIng);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW,  Uri.parse("http://facebook.com/" + item.getFacebook())));
+        }
+
     }
 
 
@@ -234,8 +368,8 @@ public class MainActivity  extends AppCompatActivity implements  ContactItemFrag
                     contactListFragment = ContactItemFragment2.newInstance();
                     return contactListFragment;
                 case 1:
-                    return BlankFragment.newInstance("","");
-            };
+                    return RushItemFragment.newInstance();
+            }
 
             return BlankFragment.newInstance("","");
         }

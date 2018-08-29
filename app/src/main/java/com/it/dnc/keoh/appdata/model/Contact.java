@@ -30,7 +30,7 @@ public class Contact {
     private String city;
 
     @ColumnInfo(name = "state")
-    private String state;
+    private Integer state;
 
     @ColumnInfo(name = "instagram")
     private String instagram;
@@ -97,11 +97,11 @@ public class Contact {
         this.instagram = instagram;
     }
 
-    public String getState() {
+    public Integer getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(Integer state) {
         this.state = state;
     }
 

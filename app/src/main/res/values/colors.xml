@@ -3,5 +3,8 @@
     <color name="colorPrimary">#122459</color>
     <color name="colorPrimaryDark">#040d26</color>
     <color name="colorAccent">#122459</color>
-    <color name="colorControls">#FFFFFF</color>
+    <color name="colorControls">#333333</color>
+    <color name="selectedCard">#d2d2d2</color>
+    <color name="card">#ffffff</color>
+
 </resources>

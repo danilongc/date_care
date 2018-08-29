@@ -3,9 +3,6 @@ package com.it.dnc.keoh;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -57,7 +54,7 @@ public class ContactItemFragment2 extends Fragment {
             List<Contact> list = new ArrayList<>();
             try {
                 ContacGetAsyncTask asyncTask = new ContacGetAsyncTask(getActivity());
-                list = (List<Contact>) asyncTask.execute().get();
+                list = asyncTask.execute().get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -106,5 +103,8 @@ public class ContactItemFragment2 extends Fragment {
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(Contact item);
         void onMultiFragmentInteraction(Boolean multi, List<Contact> contacts);
+        void onInstagramClick(Contact item);
+        void onFacebookClick(Contact item);
+
     }
 }

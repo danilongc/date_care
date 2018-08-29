@@ -1,10 +1,12 @@
 package com.it.dnc.keoh.appdata.dao;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
 import com.it.dnc.keoh.appdata.model.Contact;
+import com.it.dnc.keoh.appdata.model.Rush;
 
 import java.util.List;
 
@@ -25,6 +27,9 @@ public interface ContactDao {
 
 
     @Insert
-    void insertAll(Contact... contacts);
+    void insert(Contact... contacts);
+
+    @Delete
+    void delete(Contact... contacts);
 
 }

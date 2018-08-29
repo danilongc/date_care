@@ -29,6 +29,9 @@ public class Rush {
     @ColumnInfo(name = "possibleContacts")
     private String possibleContacts;
 
+    @ColumnInfo(name = "city")
+    private String city;
+
 
     public Rush() {
 
@@ -72,5 +75,13 @@ public class Rush {
 
     public void setPossibleContacts(String possibleContacts) {
         this.possibleContacts = possibleContacts;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }
