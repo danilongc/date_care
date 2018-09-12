@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.it.dnc.keoh.appdata.model.Contact;
-import com.it.dnc.keoh.tasks.ContacGetAsyncTask;
+import com.it.dnc.keoh.tasks.ContactGetAsyncTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,7 @@ public class ContactItemFragment2 extends Fragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             List<Contact> list = new ArrayList<>();
             try {
-                ContacGetAsyncTask asyncTask = new ContacGetAsyncTask(getActivity());
+                ContactGetAsyncTask asyncTask = new ContactGetAsyncTask(getActivity());
                 list = asyncTask.execute().get();
             } catch (InterruptedException e) {
                 e.printStackTrace();

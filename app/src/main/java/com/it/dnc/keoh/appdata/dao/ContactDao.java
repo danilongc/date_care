@@ -23,6 +23,12 @@ public interface ContactDao {
     @Query("SELECT * FROM contacts WHERE id = :id ")
     Contact findContactById(int id);
 
+    @Query("SELECT city FROM contacts GROUP BY city")
+    String[] findAllCities();
+
+    @Query("SELECT * FROM contacts WHERE id IN (:ids)")
+    List<Contact> findContactsByIds(List<Integer> ids);
+
 
     @Insert
     void insert(Contact... contacts);

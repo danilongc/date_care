@@ -5,24 +5,13 @@
 
     >
 
-    <item
-        android:id="@+id/action_delete_contact"
-        android:icon="@drawable/ic_delete_white_24dp"
-        android:title="@string/delete_contact"
-        android:visible="false"
-        app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/action_rush"
+        android:id="@+id/nav_contacts"
+        android:icon="@drawable/ic_person_white"
+        android:title="Contatos" />
+    <item
+        android:id="@+id/nav_rush"
         android:icon="@drawable/ic_group_white_24dp"
-        android:title="@string/rush"
-        android:visible="false"
-        app:showAsAction="ifRoom"/>
-
-
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:title="Rush" />
 </menu>

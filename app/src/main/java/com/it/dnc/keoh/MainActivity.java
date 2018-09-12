@@ -9,6 +9,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationItemView;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -36,7 +38,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class MainActivity  extends AppCompatActivity implements  ContactItemFragment2.OnListFragmentInteractionListener  {
+public class MainActivity  extends AppCompatActivity implements  ContactItemFragment2.OnListFragmentInteractionListener , RushItemFragment.OnListFragmentInteractionListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -54,6 +56,9 @@ public class MainActivity  extends AppCompatActivity implements  ContactItemFrag
     private ViewPager mViewPager;
     private ContactItemFragment2 contactListFragment;
     private Menu menu;
+    private BottomNavigationView bottomNavigationView;
+    private BottomNavigationItemView navContacts;
+    private BottomNavigationItemView navRush;
 
     private String[] permissions = null;
 
@@ -73,19 +78,20 @@ public class MainActivity  extends AppCompatActivity implements  ContactItemFrag
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        navContacts = findViewById(R.id.nav_contacts);
+        navRush = findViewById(R.id.nav_rush);
+
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
                 //contactListFragment.clearSelection();
 
                 Intent intent = new Intent(view.getContext(), EditContactActivity.class);
                 startActivityForResult(intent, 0);
-
 
                 /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
@@ -103,6 +109,46 @@ public class MainActivity  extends AppCompatActivity implements  ContactItemFrag
                 Manifest.permission.VIBRATE};
 
         checkPermissions();
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+                if(position == 0){
+                    bottomNavigationView.setSelectedItemId(R.id.nav_contacts);
+                }else{
+                    bottomNavigationView.setSelectedItemId(R.id.nav_rush);
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
+        navContacts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mViewPager.setCurrentItem(0, true);
+            }
+        });
+
+
+        navRush.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mViewPager.setCurrentItem(1, true);
+            }
+        });
+
 
     }
 
@@ -346,6 +392,17 @@ public class MainActivity  extends AppCompatActivity implements  ContactItemFrag
             startActivity(new Intent(Intent.ACTION_VIEW,  Uri.parse("http://facebook.com/" + item.getFacebook())));
         }
 
+    }
+
+    /***
+     * Interaction with Rush Fragment List to edition e visualization
+     * @param item
+     */
+    @Override
+    public void onListFragmentInteraction(Rush item) {
+        Intent intent = new Intent(this, EditRushActivity.class);
+        intent.putExtra("RUSH_ID", item.getId());
+        startActivity(intent);
     }
 
 

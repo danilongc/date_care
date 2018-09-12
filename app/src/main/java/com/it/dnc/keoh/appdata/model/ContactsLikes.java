@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PossibleContacts implements Serializable {
+public class ContactsLikes implements Serializable {
 
 
     private Integer id;
@@ -19,7 +19,7 @@ public class PossibleContacts implements Serializable {
     private Integer likes;
 
 
-    public PossibleContacts() {
+    public ContactsLikes() {
     }
 
     public Integer getId() {

@@ -3,43 +3,10 @@
     <!-- Drop Shadow Stack -->
 
     <item>
-        <shape>
-            <padding android:bottom="1dp"  />
-            <solid android:color="#05000000" />
-        </shape>
-    </item>
-    <item>
-        <shape>
-            <padding android:bottom="1dp" />
-            <solid android:color="#10000000" />
-        </shape>
-    </item>
-    <item>
-        <shape>
-            <padding android:bottom="1dp" android:top="1dp" />
-            <solid android:color="#15000000" />
-        </shape>
-    </item>
-    <item>
-        <shape>
-            <padding android:bottom="1dp" />
-            <solid android:color="#20000000" />
-        </shape>
-    </item>
-    <item>
-        <shape>
-            <padding android:bottom="1dp" />
-            <solid android:color="#25000000" />
-
+        <shape android:shape="oval" >
+            <size android:width="15dp" android:height="15dp"></size>
+            <solid android:color="#e40800"></solid>
         </shape>
     </item>
 
-
-    <!-- Background -->
-    <item>
-        <shape>
-
-            <solid android:color="@color/card" />
-        </shape>
-    </item>
 </layer-list>

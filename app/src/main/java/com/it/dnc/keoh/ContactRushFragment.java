@@ -1,19 +1,16 @@
 package com.it.dnc.keoh;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.it.dnc.keoh.dummy.DummyContent;
-import com.it.dnc.keoh.dummy.DummyContent.DummyItem;
-
-import java.util.List;
+import com.it.dnc.keoh.appdata.model.Contact;
+import com.it.dnc.keoh.appdata.model.Rush;
 
 /**
  * A fragment representing a list of Items.
@@ -36,8 +33,6 @@ public class ContactRushFragment extends Fragment {
     public ContactRushFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
     public static ContactRushFragment newInstance(int columnCount) {
         ContactRushFragment fragment = new ContactRushFragment();
         Bundle args = new Bundle();
@@ -64,12 +59,7 @@ public class ContactRushFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new MyContactRushRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
         }
         return view;
     }
@@ -92,18 +82,8 @@ public class ContactRushFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Contact item);
+        void onRushModified(Rush rush);
     }
 }

@@ -1,9 +1,12 @@
 package com.it.dnc.keoh.appdata.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by dnc on 05/09/18.
@@ -11,38 +14,53 @@ import java.io.Serializable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ContactsLikes implements Serializable {
+public class PossibleContacts implements Serializable {
 
 
-    private Integer id;
-    private String comments;
-    private Integer likes;
+    private List<ContactsLikes> contactsLikes;
+    private List<Integer> ids;
 
 
-    public ContactsLikes() {
+    public PossibleContacts() {
+
     }
 
-    public Integer getId() {
-        return id;
+    public List<ContactsLikes> getContactsLikes() {
+        return contactsLikes;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setContactsLikes(List<ContactsLikes> contactsLikes) {
+        this.contactsLikes = contactsLikes;
     }
 
-    public String getComments() {
-        return comments;
+    public List<Integer> getIds() {
+        return ids;
     }
 
-    public void setComments(String comments) {
-        this.comments = comments;
+    public void setIds(List<Integer> ids) {
+        this.ids = ids;
     }
 
-    public Integer getLikes() {
-        return likes;
+    public void addId(Integer id){
+        if(ids == null ){
+            ids = new ArrayList<>();
+        }
+
+        ids.add(id);
     }
 
-    public void setLikes(Integer likes) {
-        this.likes = likes;
+
+    @JsonIgnore
+    public ContactsLikes getById(Integer id){
+        int index = 0 ;
+
+        while(contactsLikes.get(index) != null){
+            if(contactsLikes.get(index).getId().equals(id)){
+                return contactsLikes.get(index);
+            }
+            index++;
+        }
+
+        return null;
     }
 }

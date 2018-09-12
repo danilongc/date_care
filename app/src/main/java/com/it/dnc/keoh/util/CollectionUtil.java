@@ -2,6 +2,9 @@ package com.it.dnc.keoh.util;
 
 import com.it.dnc.keoh.Constants;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by dnc on 21/08/18.
  */
@@ -18,6 +21,17 @@ public class CollectionUtil {
         return new StringBuilder(s).replace(lastSeparatorIndex, lastSeparatorIndex+1, "").toString();
     }
 
+    public static List<Integer> getList(String strList){
+        List<Integer> values = new ArrayList<>();
+        String[] itens = strList.split(Constants.STR_LIST_SEPARATOR);
+        for(String item : itens){
+            if(!item.equals(Constants.STR_LIST_SEPARATOR) && !item.isEmpty()){
+                values.add(new Integer(item));
+            }
+        }
+        return values;
+    }
+
     public static int getCountOnStrList(String strList){
 
         if(strList == null || strList.isEmpty() ){
@@ -29,7 +43,7 @@ public class CollectionUtil {
         String[] itens = strList.split(Constants.STR_LIST_SEPARATOR);
 
         for(String item : itens){
-            if(item.equals(Constants.STR_LIST_SEPARATOR)){
+            if(!item.equals(Constants.STR_LIST_SEPARATOR)){
                 count++;
             }
         }

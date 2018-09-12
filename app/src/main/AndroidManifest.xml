@@ -36,7 +36,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.it.dnc.keoh.MainActivity" />
         </activity>
-        <activity android:name=".EditRushActivity"></activity>
+        <activity
+            android:name=".EditRushActivity"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.it.dnc.keoh.MainActivity" />
+
+        </activity>
     </application>
 
 </manifest>

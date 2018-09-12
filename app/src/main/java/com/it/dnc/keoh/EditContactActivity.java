@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.it.dnc.keoh.appdata.model.Contact;
 import com.it.dnc.keoh.instagram.tasks.InstagramGetProfilePictureTask;
-import com.it.dnc.keoh.tasks.ContacGetAsyncTask;
+import com.it.dnc.keoh.tasks.ContactGetAsyncTask;
 import com.it.dnc.keoh.tasks.ContactSaveAsyncTask;
 
 import java.io.File;
@@ -86,7 +86,7 @@ public class EditContactActivity extends AppCompatActivity {
            Integer contact_id = (Integer)getIntent().getExtras().get("CONTACT_ID");
            isEdit =  true;
 
-           ContacGetAsyncTask asyncTask  = new ContacGetAsyncTask(this);
+           ContactGetAsyncTask asyncTask  = new ContactGetAsyncTask(this);
 
            try {
 

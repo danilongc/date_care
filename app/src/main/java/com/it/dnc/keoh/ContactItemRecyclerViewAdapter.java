@@ -72,7 +72,7 @@ public class ContactItemRecyclerViewAdapter extends RecyclerView.Adapter<Contact
         holder.txtContactName.setText(mValues.get(position).getName());
 
         StatesEnum state = StatesEnum.valueOf(mValues.get(position).getState().intValue());
-        holder.txtContactCity.setText(String.format("- %s, %s", mValues.get(position).getCity(), state.getAbbreviation() ));
+        holder.txtContactCity.setText(String.format("- %s, %s", mValues.get(position).getCity(), state != null ? state.getAbbreviation() : "--" ));
 
 
         if(!StringUtil.isEmpty(mValues.get(position).getInstagram())){

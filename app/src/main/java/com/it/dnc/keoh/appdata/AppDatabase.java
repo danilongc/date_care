@@ -20,7 +20,6 @@ import com.it.dnc.keoh.appdata.model.RushWin;
 
 @Database(entities = {Contact.class, Rush.class, RushWin.class}, version = 1)
 @TypeConverters({Converters.class})
-
 public abstract class AppDatabase extends RoomDatabase {
 
 

@@ -14,40 +14,24 @@ import java.util.List;
  * Created by dnc on 12/08/18.
  */
 
-public class ContacGetAsyncTask extends AsyncTask<Integer, Void, List<Contact>>{
+public class CitiesGetAsyncTask extends AsyncTask<Void, Void, String[]>{
 
     private WeakReference<Activity> weakActivity;
 
-    public ContacGetAsyncTask(Activity activity){
+    public CitiesGetAsyncTask(Activity activity){
         this.weakActivity = new WeakReference<>(activity);
     }
 
     @Override
-    protected List<Contact> doInBackground(Integer... params) {
-
+    protected String[] doInBackground(Void... params) {
         AppDatabase appDatabase = AppDatabase.getAppDatabase(weakActivity.get().getApplicationContext());
-        List<Contact> all = new ArrayList<>();
-        if(params.length > 0){
-            all.add(appDatabase.contactDao().findContactById(params[0]));
-        }else{
-            all = appDatabase.contactDao().getAll();
-        }
-
-        return all;
+        return appDatabase.contactDao().findAllCities();
     }
 
 
     @Override
-    protected void onPostExecute(List<Contact> list) {
+    protected void onPostExecute(String[] list) {
         super.onPostExecute(list);
 
     }
 }
-
-/*
-
-super.onPostExecute(list);
-        Contact contact = list.get(0);
-
-        AppDatabase appDatabase = AppDatabase.getAppDatabase(weakActivity.get().getApplicationContext());
-        appDatabase.contactDao().insertAll(contact);*/

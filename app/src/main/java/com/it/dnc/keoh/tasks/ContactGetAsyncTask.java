@@ -14,11 +14,11 @@ import java.util.List;
  * Created by dnc on 12/08/18.
  */
 
-public class ContacGetAsyncTask extends AsyncTask<Integer, Void, List<Contact>>{
+public class ContactGetAsyncTask extends AsyncTask<Integer, Void, List<Contact>>{
 
     private WeakReference<Activity> weakActivity;
 
-    public ContacGetAsyncTask(Activity activity){
+    public ContactGetAsyncTask(Activity activity){
         this.weakActivity = new WeakReference<>(activity);
     }
 

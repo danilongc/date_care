@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.it.dnc.keoh.RushItemFragment.OnListFragmentInteractionListener;
@@ -30,8 +31,7 @@ public class MyRushItemRecyclerViewAdapter extends RecyclerView.Adapter<MyRushIt
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_rushitem, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_rushitem, parent, false);
         return new ViewHolder(view);
     }
 
@@ -46,14 +46,13 @@ public class MyRushItemRecyclerViewAdapter extends RecyclerView.Adapter<MyRushIt
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
+            if (null != mListener) {
+                mListener.onListFragmentInteraction(holder.mItem);
+            }
             }
         });
     }
+
 
     @Override
     public int getItemCount() {
@@ -67,7 +66,6 @@ public class MyRushItemRecyclerViewAdapter extends RecyclerView.Adapter<MyRushIt
         public final TextView txtEndDate;
         public final TextView txtContactCount;
         public final TextView txtCity;
-
         public Rush mItem;
 
         public ViewHolder(View view) {
