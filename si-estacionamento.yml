@@ -1,0 +1,278 @@
+aws:
+  region: us-east-1
+
+  dynamodb:
+    endpoint:
+      use: false
+      host: dynamodb
+      port: 8000
+    table:
+      situacao:
+        identificador:
+          name: SituacaoIdentificadorEstacionamento
+          por:
+            estacionamento:
+              name: IdentificadorPorEstacionamento
+      identificador:
+        name: Identificador
+      psi:
+        output:
+          stream:
+            name: ProcessamentoSituacaoIdentificadorWorkerTarifa
+    qttd:
+      records:
+        batch:
+          insert: 75
+    consulta:
+      ultima:
+        situacao:
+          limit: 200
+  sqs:
+    endpoint:
+      use: false
+      host: elasticmq
+      port: 4576
+    queue:
+      inbound:
+        name: SituacaoIdentificadorEstacionamento
+      number:
+        messages:
+          receive: 1
+      visibility:
+        timeout: 60
+      wait:
+        time:
+          seconds: 60
+      concurrency: 1
+      messagesprefetch: 10
+  kinesis:
+    endpoint:
+      use: false
+      host: kinesis
+      port: 4568
+    application:
+      name: EstacionamentoEnviarTagApplication
+    stream:
+      name: EstacionamentoEnviarTag
+    max:
+      records:
+        read:
+          per:
+            shard: 1000
+    idle:
+      time:
+        between:
+          reads:
+            millis: 500
+    task:
+      backoff:
+        time:
+          millis: 500
+    qttd:
+      records:
+        batch:
+          insert: 125
+      tentativa:
+        batch:
+          insert: 250
+    intervalo:
+      tentativa:
+        batch:
+          insert:
+            write:
+              millis: 750
+  redis:
+    endpoint:
+      use: false
+      host: estacionamento.redis.local.veloe.com.br
+      port: 6379
+    inbound:
+      map: SituacaoIdentificadorEstacionamentoRedis
+      por:
+        idIdentificador:
+          idEstacionamento: SIEstacionamentoPorIdIdentificadorIdEstacionamentoRedis
+    default:
+      expiration: 2592000
+      expiration-ct: 600
+    pool:
+      max:
+        total: 100
+        idle: 20
+      min:
+        idle: 20
+
+  ct:
+    endpoint:
+      host: http://gestao-operacional.app.local.veloe.com.br
+      port: 8080
+      context: cadastro-tecnico
+      consultar:
+        estacionamento: ${aws.ct.endpoint.host}:${aws.ct.endpoint.port}/v1/${aws.ct.endpoint.context}
+        estacionamentos:
+          liberados: ${aws.ct.endpoint.host}:${aws.ct.endpoint.port}/v1/${aws.ct.endpoint.context}/estacionamentos/ativos
+
+  gi:
+    endpoint:
+      host: http://gestao-operacional.app.local.veloe.com.br
+      port: 8081
+      context: gestao-identificador
+      consultar:
+        identificadores:
+          ativos: ${aws.gi.endpoint.host}:${aws.gi.endpoint.port}/v2/${aws.gi.endpoint.context}/ativos
+        todos:
+          identificadores: ${aws.gi.endpoint.host}:${aws.gi.endpoint.port}/v2/${aws.gi.endpoint.context}/tags
+logging:
+  level:
+    org:
+      springframework: info
+    br:
+      com:
+        fast: trace
+
+default:
+  date:
+    format: yyyy-MM-dd'T'HH:mm:ss
+    redis:
+      format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+    ct:
+      format: yyyy-MM-dd HH:mm:ss
+
+server:
+  port: 8081
+  
+sequencial:
+  zero:
+    thread:
+      pool:
+        size: 5
+---
+# Configurações específica para ambiente de desenvolvimento
+spring:
+  profiles: dev
+aws:
+  ct:
+    endpoint:
+      port: 80
+  gi:
+    endpoint:
+      port: 80
+  sqs:
+	    queue:
+	      outbound:
+          ecenvio: 998567036;
+          name: EnviarPlaca.fifo
+          groupid: si
+---
+# Configurações específica para ambiente pré produtivo
+spring:
+  profiles: ppd
+
+aws: 
+	sqs:
+	    queue:
+        outbound:
+          ecenvio: 10;
+          name: EnviarPlaca.fifo
+          groupid: si 
+
+logging:
+  level:
+    org:
+      springframework: info
+
+    br:
+      com:
+        fast: trace
+        
+sequencial:
+  zero:
+    thread:
+      pool:
+        size: 5        
+---
+# Configurações específicas para ambiente produtivo  
+spring:
+  profiles: prd
+
+aws:
+  sqs:
+    queue:  
+      concurrency: 1
+      visibility:
+        timeout: 60
+      wait:
+        time:
+          seconds: 30
+      outbound:
+        ecenvio: 10;
+        name: EnviarPlaca.fifo 
+        groupid: si
+  redis:
+    endpoint:
+      host: estacionamento-si.redis.local.veloe.com.br
+logging:
+  level:
+    org:
+      springframework: info
+    br:
+      com:
+        fast: info
+---
+# Configurações para execução local
+spring:
+  profiles: local
+aws:  
+  redis:
+    endpoint:
+      use: true
+      host: 192.168.99.100
+      port: 6379
+
+  ct:
+    endpoint:
+      host: http://localhost
+      port: 8080
+  
+  gi:
+    endpoint:
+      host: http://localhost
+      port: 8085
+      consultar:
+        todos:
+          identificadores: ${aws.gi.endpoint.host}:${aws.gi.endpoint.port}/v2/${aws.gi.endpoint.context}/tags
+
+server:
+  port: 8083
+
+management:
+  security:
+    enabled: false
+---
+spring:
+  profiles: caipira_local_dev
+
+aws:
+  sqs:
+    queue:
+      concurrency: 1
+  redis:
+    endpoint:
+      use: false
+      host: estacionamento.rkcdrm.0001.use1.cache.amazonaws.com
+      port: 6379
+    default:
+      expiration: 300
+      expiration-ct: 600
+
+  ct:
+    endpoint:
+      host: http://gestao-operacional.app.dev.veloe.com.br
+      port: 80
+  
+  gi:
+    endpoint:
+      host: http://gestao-operacional.app.dev.veloe.com.br
+      port: 80
+
+server:
+  port: 8083
